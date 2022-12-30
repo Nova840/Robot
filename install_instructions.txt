@@ -1,0 +1,25 @@
+1. Install Raspberry Pi OS (default option) from Raspberry Pi Imager and complete setup.
+
+2. Download robot folder and place on the desktop. It has to be on the desktop for it to work.
+
+3. Run the install.sh script by double clicking on it and clicking "Execute in Terminal". The Raspberry Pi will reboot. If you don't have this option, right click it and go to Properties, then Permissions. From there you should change Execute to "Anyone".
+
+4. After the system reboots, you should see the program running. Press F3 to exit the program and open inputs.txt. There are instructions for setting up input in that file.
+
+-To run the program again, run the launcher.sh script.
+
+-The program automatically runs when the Raspberry Pi starts up. To disable this, run the startup_disable.sh script. To enable it again, run the startup_enable.sh script.
+
+To control the robot remotely:
+
+1. Enable VNC in Raspberry Pi Configuration > Interfaces
+
+2. Download VNC Viewer from https://www.realvnc.com/connect/download/viewer on the computer you want to control the robot from.
+
+3. (for LAN) Click the new VNC icon on the top right of the screen. Type the IP address into the top bar of the VNC Viewer app (it's most likely going to be a number that looks like 192.168.?.? or 10.0.?.?). Make sure both computers are connected to the same network.
+
+3. (for over the Internet) If you want to connect from over the internet, you will need to make an account. Once you sign into the account on both the Raspberry Pi and the VNC Viewer app you should see it appear in the app. If you have other people that want to control it, you will need to have them make accounts and invite them using the VNC website. They should see it in the app just like you can.
+
+4. You will be prompted for the Raspberry Pi's username and password. This is what you set in step 1. The default username is "pi" and the default password is "raspberry".
+
+You should now be able to control your Raspberry Pi like you would if the keyboard was plugged in. You can only use keyboard input though, VNC won't recognise Xbox controller input.

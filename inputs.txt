@@ -1,0 +1,107 @@
+#This is the file where you tell motors which inputs should affect them.
+#Note that capitalization and spacing do not matter for this file, and any line starting with # will be ignored.
+#There are multiple types of motors you can use. The types are MOTOR, SERVO_1, SERVO_2, PCA9685_1, and PCA9685_2.
+
+#If we input MOTOR into the first element, it will take 3 GPIO numbers after it. These are the EN, GPIO1, and GPIO2 on the L298N.
+#The GPIO1 and GPIO2 can be flipped, and the motor will spin in the opposite direction.
+#If you are not using the EN pin, you can just input -1. This will mean you don't get speed control, just make sure you put the jumper on the L298N's EN pin.
+
+#SHUTDOWN can be used as the first element to shut down the raspberry pi.
+
+#You then specify inputs by supplying them in pairs of input: multiplier.
+#You can use Xbox controller or keyboard/mouse input, when using an Xbox controller you put JOY_ before the input, and for keyboard/mouse it's KEY_.
+
+#You can find out the keyboard/mouse button by using the keyboard_mouse_test.sh script. You press a button and it will tell you what the next part of the input is.
+#For example, A on keyboard gives you 'A', and the up arrow gives you KEY.UP. So the inputs would be KEY_'A' and KEY_KEY.UP.
+# KEY_',' is not available because it's what separates elements.
+
+#For Xbox controller input, the possible inputs are:
+#A, B, X, Y, GUIDE, LEFTX, LEFTY, RIGHTX, RIGHTY, DPADUP, DPADDOWN, DPADLEFT, DPADRIGHT, LEFTTHUMBSTICK, RIGHTTHUMBSTICK, LEFTBUMPER, RIGHTBUMPER, LEFTTRIGGER, RIGHTTRIGGER
+#For example, for A on the controller you would type JOY_A, and for the X axis of the left stick you would type JOY_LEFTX.
+
+#A physical button can be connected to the GPIO pins and controlled with BTN followed by the GPIO number, for example, BTN_21.
+#The button should short the GPIO pin with one of the ground pins.
+
+#You then multiply the input by a number, as a percent in decimal form. So you'd type 1 to have 100% speed, 0.5 to have 50% speed, etc.
+#You can multiply by negative numbers to make the motor spin backwards.
+#Using multiple inputs will make them add together, so for example, pushing a button with a multiplier of 1 and another button with -1 would cancel out and the motor would stop.
+#With that in mind, you could make forward and backward buttons, or fast and slow buttons.
+#The inputs can add up to be more than 100% speed, but the motor will not atually go above 100% (or below -100%).
+
+
+#Remove the # before the line and restart the program to test out these examples. Make sure the motors are connected to the correct pins for each example.
+
+
+#Example 1: (Type, EN, GPIO1, GPIO2, Input, Multiplier)
+#MOTOR, 16, 20, 21, KEY_KEY.UP, 1
+#This will move the motor connected to GPIO 16, 20, and 21 when the UP arrow key is pressed.
+
+#Example 2: (Type, EN, GPIO1, GPIO2, Input, Multiplier, Input, Multiplier, Input, Multiplier, Input, Multiplier)
+#MOTOR, 16, 20, 21, KEY_KEY.UP, 1, KEY_KEY.DOWN, -1, JOY_LEFTY, 1, KEY_'W', 0.5, KEY_'S', -0.5, JOY_RIGHTY, 0.5
+#Same as Example 1, but with more inputs.
+#The DOWN arrow spins it in the opposite direction, and you can also control it with the left analog stick on the controller.
+#Using W and S instead of UP and DOWN will make the motor spin at half speed, as will using the right stick instead of the left stick.
+
+
+#Servo motors are also supported, you type SERVO_1 instead of MOTOR for the first element.
+#Servos take 4 numbers after it: the GPIO number, the resting position, the minimum position, and the maximum position.
+#The positions are the PWM duty cycle, as a percentage from 0 to 100. Some servos are different, but good numbers to try at first are between 5 and 10.
+#The resting position is where the servo will be when no input is pressed.
+#If you try to set the servo's position too low / high, the servo won't attempt to move at all, so it needs a min and max to tell it the range it can move.
+#If the servo isn't moving in one direction, it might be the min / max value.
+
+#Input for servos works the same way as for motors, but instead of a speed multiplier it's a change in position.
+#So if the servo is at position 7 and you want it to move to 5 when you push B on the controller, you would use "JOY_B, -2"
+
+
+#Example 1: (Type, GPIO, Resting Position, Min Position, Max Position, Input, Position Change, Input, Position Change)
+#SERVO_1, 21, 7, 5, 9, KEY_KEY.LEFT, 2, KEY_KEY.RIGHT, -2
+#This will move the servo back and forth when you push the left and right arrow keys.
+
+#Example 2: (Type, GPIO, Resting Position, Min Position, Max Position, Input, Position Change, Input, Position Change)
+#SERVO_1, 21, 5, 5, 9, KEY_KEY.UP, 2, KEY_KEY.DOWN, 2
+#Inputs will be added together, so in this case, the resting position is 7, and if both up and down are pressed, the servo will be at position 9.
+
+#Example 3: (Type, GPIO, Resting Position, Min Position, Max Position, Input, Position Change, Input, Position Change)
+#SERVO_1, 21, 5, 5, 7, KEY_KEY.UP, 2, KEY_KEY.DOWN, 2
+#Like Example 2, but instead of going farther when both of them are pushed, it goes to the same position (7) when either or both of them are pushed.
+#This is because it's hitting the Max Position and can't go any farther.
+
+
+#You can also change the type to SERVO_2 and it will behave like a normal MOTOR but with limits on how far it can spin.
+#Since it no longer has a resting position, it now becomes the starting position that it will be in then the script starts up.
+#Instead of input multipliers like a normal MOTOR, it's now the position change per second. It's the same amount it spins for SERVO_1 every second.
+
+
+#Example: (Type, GPIO, Starting Position, Min Position, Max Position, Input, Position Change / Time, Input, Position Change / Time)
+#SERVO_2, 21, 7, 5, 9, KEY_KEY.LEFT, 1, KEY_KEY.RIGHT, -1
+#This will move the servo back and forth when you push the left and right arrow keys.
+
+
+#You will notice the servo can be a bit jittery when standing still. This is because the PWM signal is not very precise with the GPIO pins.
+#You can get a PCA9685 Servo Driver to improve this. To use it, just replace the word "SERVO" with "PCA9685", and instead of the GPIO pin you put the channel.
+
+
+#Example: (Type, Channel, Resting Position, Min Position, Max Position, Input, Position Change, Input, Position Change)
+#PCA9685_1, 0, 7, 5, 9, KEY_KEY.LEFT, 2, KEY_KEY.RIGHT, -2
+#Same as SERVO_1 Example 1 but using the PCA9685 Servo Driver. You can use it just like SERVO_1 and SERVO_2.
+
+
+#SHUTDOWN only takes the inputs as arguments, nothing else.
+
+
+#Example: (Type, Input, Multiplier)
+#SHUTDOWN, KEY_KEY.F1, 1
+#This will shut down the raspberry pi when the F1 key is pressed. The shut down function is called when the input is greater than or equal to 1.
+
+#Example: (Type, Input, Multiplier)
+#SHUTDOWN, KEY_KEY.F1, 0.5, KEY_KEY.F2, 0.5
+#This will shut down the raspberry pi when the F1 and F2 keys are pressed at the same time. the two 0.5's are added together to get 1.
+
+
+#Using BTN as input will allow you to connect a physical button to the raspberry pi, just connect one side to a GPIO pin and the other to ground.
+
+
+#Example: (Type, Input, Multiplier)
+#SHUTDOWN, BTN_21, 1
+#This will shut down the raspberry pi when a physical button is pressed that is connected to GPIO 21 and ground.
