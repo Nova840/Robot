@@ -64,25 +64,25 @@ def _correctTypes(splitLine):
             for i in range(len(splitLine[4:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 4][0:3] == "BTN":
+                if splitLine[i + 4][0:3] == "SWT":
                     int(splitLine[i + 4][4:])
         elif splitLine[0] == "DRV8833":
             for i in range(len(splitLine[3:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 3][0:3] == "BTN":
+                if splitLine[i + 3][0:3] == "SWT":
                     int(splitLine[i + 3][4:])
         elif splitLine[0] == "SHUTDOWN":
             for i in range(len(splitLine[1:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 1][0:3] == "BTN":
+                if splitLine[i + 1][0:3] == "SWT":
                     int(splitLine[i + 1][4:])
         else:
             for i in range(len(splitLine[5:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 5][0:3] == "BTN":
+                if splitLine[i + 5][0:3] == "SWT":
                     int(splitLine[i + 5][4:])
         return True
     except:
@@ -132,25 +132,25 @@ def _uniquePins(splitLines):
             for i in range(len(splitLine[4:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 4][0:3] == "BTN" and not _validPin(int(splitLine[i + 4][4:]), pins, False):
+                if splitLine[i + 4][0:3] == "SWT" and not _validPin(int(splitLine[i + 4][4:]), pins, False):
                     return False
         elif first == "DRV8833":
             for i in range(len(splitLine[3:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 3][0:3] == "BTN" and not _validPin(int(splitLine[i + 3][4:]), pins, False):
+                if splitLine[i + 3][0:3] == "SWT" and not _validPin(int(splitLine[i + 3][4:]), pins, False):
                     return False
         elif first == "SHUTDOWN":
             for i in range(len(splitLine[1:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 1][0:3] == "BTN" and not _validPin(int(splitLine[i + 1][4:]), pins, False):
+                if splitLine[i + 1][0:3] == "SWT" and not _validPin(int(splitLine[i + 1][4:]), pins, False):
                     return False
         else:
             for i in range(len(splitLine[5:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 5][0:3] == "BTN" and not _validPin(int(splitLine[i + 5][4:]), pins, False):
+                if splitLine[i + 5][0:3] == "SWT" and not _validPin(int(splitLine[i + 5][4:]), pins, False):
                     return False
                 
     return True

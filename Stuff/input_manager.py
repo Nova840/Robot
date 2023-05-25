@@ -87,7 +87,7 @@ class Input:
                 result = Input._joy.leftTrigger()
             elif button == "RIGHTTRIGGER":
                 result = Input._joy.rightTrigger()
-        elif device == "BTN":
+        elif device == "SWT":
             result = not GPIO.input(int(button))
         result *= multiplier
         return result
@@ -105,6 +105,6 @@ class Input:
         for i in range(int(len(inputs) / 2)):
             inputsDict.update({inputs[i * 2]: float(inputs[i * 2 + 1])})#input string: input multiplier
         for i in inputsDict:
-            if i[0:3] == "BTN":
+            if i[0:3] == "SWT":
                 GPIO.setup(int(i[4:]), GPIO.IN, pull_up_down = GPIO.PUD_UP)
         return inputsDict

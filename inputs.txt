@@ -22,8 +22,8 @@
 #A, B, X, Y, GUIDE, LEFTX, LEFTY, RIGHTX, RIGHTY, DPADUP, DPADDOWN, DPADLEFT, DPADRIGHT, LEFTTHUMBSTICK, RIGHTTHUMBSTICK, LEFTBUMPER, RIGHTBUMPER, LEFTTRIGGER, RIGHTTRIGGER
 #For example, for A on the controller you would type JOY_A, and for the X axis of the left stick you would type JOY_LEFTX.
 
-#A physical button can be connected to the GPIO pins and controlled with BTN followed by the GPIO number, for example, BTN_21.
-#The button should short the GPIO pin with one of the ground pins.
+#A physical switch can be connected to the GPIO pins and controlled with SWT followed by the GPIO number, for example, SWT_21.
+#The switch should short the GPIO pin with one of the ground pins.
 
 #You then multiply the input by a number, as a percent in decimal form. So you'd type 1 to have 100% speed, 0.5 to have 50% speed, etc.
 #You can multiply by negative numbers to make the motor spin backwards.
@@ -110,9 +110,9 @@
 #This will shut down the raspberry pi when the F1 and F2 keys are pressed at the same time. the two 0.5's are added together to get 1.
 
 
-#Using BTN as input will allow you to connect a physical button to the raspberry pi, just connect one side to a GPIO pin and the other to ground.
+#Using SWT as input will allow you to connect a physical switch to the raspberry pi, just connect one side to a GPIO pin and the other to ground.
 
 
 #Example: (Type, Input, Multiplier)
-#SHUTDOWN, BTN_21, 1
-#This will shut down the raspberry pi when a physical button is pressed that is connected to GPIO 21 and ground.
+#SHUTDOWN, SWT_21, 1
+#This will shut down the raspberry pi when a physical switch is pressed that is connected to GPIO 21 and ground.
