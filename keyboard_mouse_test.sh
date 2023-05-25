@@ -1,1 +1,1 @@
-python3 stuff/keyboard_mouse_test.py
+python3 Stuff/keyboard_mouse_test.py

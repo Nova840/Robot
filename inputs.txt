@@ -1,10 +1,13 @@
 #This is the file where you tell motors which inputs should affect them.
 #Note that capitalization and spacing do not matter for this file, and any line starting with # will be ignored.
-#There are multiple types of motors you can use. The types are MOTOR, SERVO_1, SERVO_2, PCA9685_1, and PCA9685_2.
+#There are multiple types of motors you can use. The types are L298N, DRV8833, SERVO_1, SERVO_2, PCA9685_1, and PCA9685_2.
 
-#If we input MOTOR into the first element, it will take 3 GPIO numbers after it. These are the EN, GPIO1, and GPIO2 on the L298N.
+#If we input L298N into the first element, it will take 3 GPIO numbers after it. These are the EN, GPIO1, and GPIO2 on the L298N.
 #The GPIO1 and GPIO2 can be flipped, and the motor will spin in the opposite direction.
 #If you are not using the EN pin, you can just input -1. This will mean you don't get speed control, just make sure you put the jumper on the L298N's EN pin.
+
+#If you are using the DRV8833, you would make it the same as the L298N but without supplying the EN pin.
+#So instead of "L298N, EN, GPIO1, GPIO2", you would write "DRV8833, GPIO1, GPIO2"
 
 #SHUTDOWN can be used as the first element to shut down the raspberry pi.
 
@@ -33,14 +36,22 @@
 
 
 #Example 1: (Type, EN, GPIO1, GPIO2, Input, Multiplier)
-#MOTOR, 16, 20, 21, KEY_KEY.UP, 1
+#L298N, 16, 20, 21, KEY_KEY.UP, 1
 #This will move the motor connected to GPIO 16, 20, and 21 when the UP arrow key is pressed.
 
 #Example 2: (Type, EN, GPIO1, GPIO2, Input, Multiplier, Input, Multiplier, Input, Multiplier, Input, Multiplier)
-#MOTOR, 16, 20, 21, KEY_KEY.UP, 1, KEY_KEY.DOWN, -1, JOY_LEFTY, 1, KEY_'W', 0.5, KEY_'S', -0.5, JOY_RIGHTY, 0.5
+#L298N, 16, 20, 21, KEY_KEY.UP, 1, KEY_KEY.DOWN, -1, JOY_LEFTY, 1, KEY_'W', 0.5, KEY_'S', -0.5, JOY_RIGHTY, 0.5
 #Same as Example 1, but with more inputs.
 #The DOWN arrow spins it in the opposite direction, and you can also control it with the left analog stick on the controller.
 #Using W and S instead of UP and DOWN will make the motor spin at half speed, as will using the right stick instead of the left stick.
+
+
+#If you wanted to use the DRV8833 instead of the L298N in Example 1, this is what it would look like:
+
+
+#Example 3: (Type, GPIO1, GPIO2, Input, Multiplier)
+#DRV8833, 20, 21, KEY_KEY.UP, 1
+#Same as Example 1, but using the DRV8833 instead of the L298N. Note that it doesn't use the EN pin.
 
 
 #Servo motors are also supported, you type SERVO_1 instead of MOTOR for the first element.

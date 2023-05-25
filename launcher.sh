@@ -1,2 +1,2 @@
-cd /home/pi/Desktop/robot
-sudo python3 stuff/robot.py
+cd /home/pi/Desktop/Robot
+sudo python3 Stuff/start.py

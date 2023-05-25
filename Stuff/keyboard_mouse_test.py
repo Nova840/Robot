@@ -1,8 +1,4 @@
-from pynput.keyboard import Key, Listener as KListener
-from pynput.mouse import Button, Listener as MListener
-import _thread
-
-print("Press any key to see value. Press CTRL + C to exit.")
+from pynput import keyboard, mouse
 
 def on_press(key):
     keyStr = str(key).upper()
@@ -16,7 +12,7 @@ def on_release(key):
     return
 
 def k_listen():
-    with KListener(on_press = on_press, on_release = on_release) as k_listener:
+    with keyboard.Listener(on_press = on_press, on_release = on_release) as k_listener:
         k_listener.join()
 
 def on_click(x, y, button, pressed):
@@ -25,11 +21,20 @@ def on_click(x, y, button, pressed):
     print("\nPressed: " + str(button))
 
 def m_listen():
-    with MListener(on_click = on_click) as m_listener:
+    with mouse.Listener(on_click = on_click) as m_listener:
         m_listener.join()
 
-_thread.start_new_thread(k_listen, ())
-_thread.start_new_thread(m_listen, ())
+def main():
+    print("Press any key to see value. Press CTRL + C to exit.")
 
-while True:
-    pass
+    k_listener  = keyboard.Listener(on_press = on_press, on_release = on_release, suppress = False)
+    k_listener.start()
+
+    m_listener = mouse.Listener(on_click = on_click, suppress = False)
+    m_listener.start()
+
+    while True:
+        pass
+
+if __name__ == "__main__":
+    main()

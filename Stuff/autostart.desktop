@@ -2,4 +2,4 @@
 Encoding=UTF-8
 Name=Robot Autostart
 Comment=Run launcher.sh in a terminal window
-Exec=/usr/bin/lxterm -e 'sh /home/pi/Desktop/robot/launcher.sh'
+Exec=/usr/bin/lxterm -e 'sh /home/pi/Desktop/Robot/launcher.sh'
