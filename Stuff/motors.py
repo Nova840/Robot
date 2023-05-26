@@ -132,7 +132,6 @@ def _setMotorL298N(pwm, pin1, pin2, percentInput):
         
 def _setMotorDRV8833(pin1, pin2, percentInput):
     spin = max(-1, min(1, percentInput))
-    print(spin)
     if spin > 0:
         pin1.ChangeDutyCycle(abs(spin) * 100)
         pin2.ChangeDutyCycle(0)
