@@ -108,3 +108,10 @@ class Input:
             if i[0:3] == "SWT":
                 GPIO.setup(int(i[4:]), GPIO.IN, pull_up_down = GPIO.PUD_UP)
         return inputsDict
+
+    @staticmethod
+    def stopInputListeners():
+        Input._k_listener.stop()
+        Input._m_listener.stop()
+        if Input._joy != None:
+            Input._joy.close()

@@ -16,7 +16,7 @@ def validateInput(lines):
 
 def _firstElementIsValidType(splitLine):
     first = splitLine[0]
-    return first == "L298N" or first == "SERVO_1" or first == "SERVO_2" or first == "PCA9685_1" or first == "PCA9685_2" or first == "SHUTDOWN"
+    return first == "L298N" or first == "DRV8833" or first == "SERVO_1" or first == "SERVO_2" or first == "PCA9685_1" or first == "PCA9685_2" or first == "SHUTDOWN"
 
 def _correctNumberOfElements(splitLine):
     #number of elements must be even, because inputs come in pairs

@@ -16,13 +16,13 @@ class L298N(object):
         GPIO.output(self.pin1, GPIO.LOW)
         GPIO.output(self.pin2, GPIO.LOW)
         if self.pinEN >= 0:
-            self.pwm = GPIO.PWM(self.pinEN, 1000)
-            self.pwm.start(0)
+            self.pinENPWM = GPIO.PWM(self.pinEN, 1000)
+            self.pinENPWM.start(0)
         else:
             self.pwm = None
         
     def update(self, updateInterval):
-        _setMotorL298N(self.pwm, self.pin1, self.pin2, Input.getSumOfInputs(self.inputs))
+        _setMotorL298N(self.pinENPWM, self.pin1, self.pin2, Input.getSumOfInputs(self.inputs))
 
 
 class DRV8833(object):
@@ -32,14 +32,17 @@ class DRV8833(object):
         self.pin2 = pin2
         self.inputs = inputs
         
-        GPIO.PWM(self.pin1, 1000)
-        self.pin1.start(0)
+        GPIO.setup(self.pin1, GPIO.OUT)
+        GPIO.setup(self.pin2, GPIO.OUT)
         
-        GPIO.PWM(self.pin2, 1000)
-        self.pin2.start(0)
+        self.pin1PWM = GPIO.PWM(self.pin1, 1000)
+        self.pin1PWM.start(0)
+        
+        self.pin2PWM = GPIO.PWM(self.pin2, 1000)
+        self.pin2PWM.start(0)
         
     def update(self, updateInterval):
-        _setMotorDRV8833(self.pin1, self.pin2, Input.getSumOfInputs(self.inputs))
+        _setMotorDRV8833(self.pin1PWM, self.pin2PWM, Input.getSumOfInputs(self.inputs))
     
 
 class Servo_1(object):
@@ -52,11 +55,11 @@ class Servo_1(object):
         self.inputs = inputs
         
         GPIO.setup(self.pin, GPIO.OUT)
-        self.pwm = GPIO.PWM(self.pin, 50)
-        self.pwm.start(self.restingDutyCycle)
+        self.pinPWM = GPIO.PWM(self.pin, 50)
+        self.pinPWM.start(self.restingDutyCycle)
 
     def update(self, updateInterval):
-        _setServo(self.pwm, self.restingDutyCycle + Input.getSumOfInputs(self.inputs), self.minDutyCycle, self.maxDutyCycle)
+        _setServo(self.pinPWM, self.restingDutyCycle + Input.getSumOfInputs(self.inputs), self.minDutyCycle, self.maxDutyCycle)
 
 
 class Servo_2(object):
@@ -69,13 +72,13 @@ class Servo_2(object):
         self.inputs = inputs
         
         GPIO.setup(self.pin, GPIO.OUT)
-        self.pwm = GPIO.PWM(self.pin, 50)
-        self.pwm.start(self.startingDutyCycle)
+        self.pinPWM = GPIO.PWM(self.pin, 50)
+        self.pinPWM.start(self.startingDutyCycle)
         self.currentDutyCycle = self.startingDutyCycle
 
     def update(self, updateInterval):
         self.currentDutyCycle = max(self.minDutyCycle, min(self.maxDutyCycle, self.currentDutyCycle + Input.getSumOfInputs(self.inputs) * updateInterval))
-        _setServo(self.pwm, self.currentDutyCycle, self.minDutyCycle, self.maxDutyCycle)
+        _setServo(self.pinPWM, self.currentDutyCycle, self.minDutyCycle, self.maxDutyCycle)
 
 
 class PCA9685_1(object):
@@ -129,6 +132,7 @@ def _setMotorL298N(pwm, pin1, pin2, percentInput):
         
 def _setMotorDRV8833(pin1, pin2, percentInput):
     spin = max(-1, min(1, percentInput))
+    print(spin)
     if spin > 0:
         pin1.ChangeDutyCycle(abs(spin) * 100)
         pin2.ChangeDutyCycle(0)

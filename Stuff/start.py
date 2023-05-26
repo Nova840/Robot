@@ -6,7 +6,7 @@ import busio
 from adafruit_pca9685 import PCA9685
 import sys
 from input_manager import Input
-from motors import L298N, Servo_1, Servo_2, PCA9685_1, PCA9685_2
+from motors import L298N, DRV8833, Servo_1, Servo_2, PCA9685_1, PCA9685_2
 from validate_input import validateInput
 
 def main():
@@ -24,6 +24,7 @@ def main():
     except Exception as e:
         print(e)
         print("Press enter to exit.")
+        Input.stopInputListeners()
         input()
         sys.exit()
 
@@ -33,7 +34,7 @@ def main():
         pca9685.frequency = 60
     except:
         pca9685 = None
-    GPIO.setmode(GPIO.BCM)#not needed? says already set if set to GPIO.BOARD
+    GPIO.setmode(GPIO.BCM)
     motors = []
     shutdown_inputs = {}
 
@@ -41,6 +42,8 @@ def main():
         l = l.split(",")
         if l[0] == "L298N":
             motors.append(L298N(int(l[1]), int(l[2]), int(l[3]), Input.getInputsDictionary(l[4:])))
+        elif l[0] == "DRV8833":
+            motors.append(DRV8833(int(l[1]), int(l[2]), Input.getInputsDictionary(l[3:])))
         elif l[0] == "SERVO_1":
             motors.append(Servo_1(int(l[1]), float(l[2]), float(l[3]), float(l[4]), Input.getInputsDictionary(l[5:])))
         elif l[0] == "SERVO_2":
