@@ -9,8 +9,6 @@ chmod 755 Stuff/setup_i2c.sh
 
 sudo apt-get install -y xboxdrv
 
-sudo apt-get install -y xterm
-
 sudo python3 -m pip install pynput
 
 sudo python3 -m pip install adafruit-circuitpython-pca9685
