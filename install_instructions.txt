@@ -1,6 +1,6 @@
 1. Install Raspberry Pi OS (default option) from Raspberry Pi Imager and complete setup.
 
-2. Download robot folder and place on the desktop. It has to be on the desktop for it to work.
+2. Download Robot folder from github.com/Nova840/Robot and place on the desktop. It has to be on the desktop for it to work. Make sure the folder is named "Robot" (case sensitive).
 
 3. Run the install.sh script by double clicking on it and clicking "Execute in Terminal". The Raspberry Pi will reboot. If you don't have this option, right click it and go to Properties, then Permissions. From there you should change Execute to "Anyone".
 
