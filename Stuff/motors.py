@@ -16,13 +16,13 @@ class L298N(object):
         GPIO.output(self.pin1, GPIO.LOW)
         GPIO.output(self.pin2, GPIO.LOW)
         if self.pinEN >= 0:
-            self.pinENPWM = GPIO.PWM(self.pinEN, 1000)
-            self.pinENPWM.start(0)
+            self.pinEnPWM = GPIO.PWM(self.pinEN, 1000)
+            self.pinEnPWM.start(0)
         else:
-            self.pwm = None
+            self.pinEnPWM = None
         
     def update(self, updateInterval):
-        _setMotorL298N(self.pinENPWM, self.pin1, self.pin2, Input.getSumOfInputs(self.inputs))
+        _setMotorL298N(self.pinEnPWM, self.pin1, self.pin2, Input.getSumOfInputs(self.inputs))
 
 
 class DRV8833(object):
@@ -116,7 +116,7 @@ class PCA9685_2(object):
 
 
 
-def _setMotorL298N(pwm, pin1, pin2, percentInput):
+def _setMotorL298N(pinEnPWM, pin1, pin2, percentInput):
     spin = max(-1, min(1, percentInput))
     if spin > 0:
         GPIO.output(pin1, GPIO.HIGH)
@@ -127,24 +127,24 @@ def _setMotorL298N(pwm, pin1, pin2, percentInput):
     else:
         GPIO.output(pin1, GPIO.LOW)
         GPIO.output(pin2, GPIO.LOW)
-    if pwm != None:
-        pwm.ChangeDutyCycle(abs(spin) * 100)
+    if pinEnPWM != None:
+        pinEnPWM.ChangeDutyCycle(abs(spin) * 100)
         
-def _setMotorDRV8833(pin1, pin2, percentInput):
+def _setMotorDRV8833(pin1PWM, pin2PWM, percentInput):
     spin = max(-1, min(1, percentInput))
     if spin > 0:
-        pin1.ChangeDutyCycle(abs(spin) * 100)
-        pin2.ChangeDutyCycle(0)
+        pin1PWM.ChangeDutyCycle(abs(spin) * 100)
+        pin2PWM.ChangeDutyCycle(0)
     elif spin < 0:
-        pin1.ChangeDutyCycle(0)
-        pin2.ChangeDutyCycle(abs(spin) * 100)
+        pin1PWM.ChangeDutyCycle(0)
+        pin2PWM.ChangeDutyCycle(abs(spin) * 100)
     else:
-        pin1.ChangeDutyCycle(0)
-        pin2.ChangeDutyCycle(0)
+        pin1PWM.ChangeDutyCycle(0)
+        pin2PWM.ChangeDutyCycle(0)
 
-def _setServo(pwm, dutyCycle, minDutyCycle, maxDutyCycle):
+def _setServo(pinPWM, dutyCycle, minDutyCycle, maxDutyCycle):
     dutyCycle = max(minDutyCycle, min(maxDutyCycle, dutyCycle))
-    pwm.ChangeDutyCycle(dutyCycle)
+    pinPWM.ChangeDutyCycle(dutyCycle)
 
 def _setServoPCA9685(pca9685, channel, dutyCycle, minDutyCycle, maxDutyCycle):
     dutyCycle = max(minDutyCycle, min(maxDutyCycle, dutyCycle))
