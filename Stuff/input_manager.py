@@ -4,38 +4,44 @@ import RPi.GPIO as GPIO
 
 class Input:
     _joy = None
-    try:
-        _joy = xbox.Joystick()
-        print("Joystick Found")
-    except:
-        print("Joystick Not Found")
+    _kmInputs = []
+    _k_listener = None
+    _m_listener = None
 
-    _keyboardInputs = []
-
+    @staticmethod
     def _on_press(key):
         keyStr = str(key).upper()
-        if keyStr not in Input._keyboardInputs:
-            Input._keyboardInputs.append(keyStr)
+        if keyStr not in Input._kmInputs:
+            Input._kmInputs.append(keyStr)
 
+    @staticmethod
     def _on_release(key):
         keyStr = str(key).upper()
-        if keyStr in Input._keyboardInputs:
-            Input._keyboardInputs.remove(keyStr)
+        if keyStr in Input._kmInputs:
+            Input._kmInputs.remove(keyStr)
 
+    @staticmethod
     def _on_click(x, y, button, pressed):
         buttonStr = str(button).upper()
         if pressed:
-            if buttonStr not in Input._keyboardInputs:
-                Input._keyboardInputs.append(buttonStr)
+            if buttonStr not in Input._kmInputs:
+                Input._kmInputs.append(buttonStr)
         else:
-            if buttonStr in Input._keyboardInputs:
-                Input._keyboardInputs.remove(buttonStr)
+            if buttonStr in Input._kmInputs:
+                Input._kmInputs.remove(buttonStr)
 
-    _k_listener = keyboard.Listener(on_press = _on_press, on_release = _on_release, suppress = True)
-    _k_listener.start()
-
-    _m_listener = mouse.Listener(on_click = _on_click, suppress = True)
-    _m_listener.start()
+    @staticmethod
+    def start():
+        try:
+            _joy = xbox.Joystick()
+            joystickConnected = True
+        except:
+            joystickConnected = False
+        _k_listener = keyboard.Listener(on_press = Input._on_press, on_release = Input._on_release, suppress = True)
+        _k_listener.start()
+        _m_listener = mouse.Listener(on_click = Input._on_click, suppress = True)
+        _m_listener.start()
+        return joystickConnected
 
     @staticmethod
     def getInput(inputText, multiplier):
@@ -43,7 +49,7 @@ class Input:
         button = inputText[4:]
         result = 0
         if device == "KEY":
-            result = 1 if button in Input._keyboardInputs else 0
+            result = 1 if button in Input._kmInputs else 0
         elif device == "JOY" and Input._joy != None and Input._joy.connected():
             if button == "A":
                 result = Input._joy.A()
