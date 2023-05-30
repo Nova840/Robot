@@ -23,9 +23,11 @@ def _correctNumberOfElements(splitLine):
     #skip over the first 4 elements for motors, first 5 for servos
     if splitLine[0] == "L298N":
         return len(splitLine) >= 4 and len(splitLine[4:]) % 2 == 0
+    elif splitLine[0] == "DRV8833":
+        return len(splitLine) >= 3 and len(splitLine[3:]) % 2 == 0
     elif splitLine[0] == "SHUTDOWN":
         return len(splitLine) >= 1 and len(splitLine[1:]) % 2 == 0
-    else:
+    elif _isServo(splitLine[0]):
         return len(splitLine) >= 5 and len(splitLine[5:]) % 2 == 0
 
 def _correctTypes(splitLine):
@@ -50,7 +52,7 @@ def _correctTypes(splitLine):
                 if i % 2 == 0:
                     continue
                 float(splitLine[i + 1])
-        else:
+        elif _isServo(splitLine[0]):
             int(splitLine[1])
             float(splitLine[2])
             float(splitLine[3])
@@ -78,18 +80,19 @@ def _correctTypes(splitLine):
                     continue
                 if splitLine[i + 1][0:3] == "SWT":
                     int(splitLine[i + 1][4:])
-        else:
+        elif _isServo(splitLine[0]):
             for i in range(len(splitLine[5:])):
                 if i % 2 == 1:
                     continue
                 if splitLine[i + 5][0:3] == "SWT":
                     int(splitLine[i + 5][4:])
+
         return True
     except:
         return False
 
 def _servoValuesWithinRange(splitLine):
-    if splitLine[0] != "Servo_1" and splitLine[0] != "Servo_2" and splitLine[0] != "PCA9685_1" and splitLine[0] != "PCA9685_2":
+    if not _isServo(splitLine[0]):
         return True
 
     servoStart = float(splitLine[2])
@@ -162,3 +165,6 @@ def _validPin(pin, pins, isL298nEN):
     if valid:
         pins.remove(pin)
     return valid
+
+def _isServo(str):
+    return str == "Servo_1" or str == "Servo_2" or str == "PCA9685_1" or str == "PCA9685_2"
