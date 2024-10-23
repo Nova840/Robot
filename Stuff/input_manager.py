@@ -11,12 +11,16 @@ class Input:
     @staticmethod
     def _on_press(key):
         keyStr = str(key).upper()
+        if keyStr == "','":
+            keyStr = "'COMMA'"
         if keyStr not in Input._kmInputs:
             Input._kmInputs.append(keyStr)
 
     @staticmethod
     def _on_release(key):
         keyStr = str(key).upper()
+        if keyStr == "','":
+            keyStr = "'COMMA'"
         if keyStr in Input._kmInputs:
             Input._kmInputs.remove(keyStr)
 

@@ -14,9 +14,8 @@
 #You then specify inputs by supplying them in pairs of input: multiplier.
 #You can use Xbox controller or keyboard/mouse input, when using an Xbox controller you put JOY_ before the input, and for keyboard/mouse it's KEY_.
 
-#You can find out the keyboard/mouse button by using the keyboard_mouse_test.sh script. You press a button and it will tell you what the next part of the input is.
-#For example, A on keyboard gives you 'A', and the up arrow gives you KEY.UP. So the inputs would be KEY_'A' and KEY_KEY.UP.
-# KEY_',' is not available because it's what separates elements.
+#You can find out the keyboard/mouse button by using the keyboard_mouse_test.sh script. You press a button and it will tell you what the input is.
+#For example, A on keyboard gives you KEY_'A', and the up arrow gives you KEY_KEY.UP.
 
 #For Xbox controller input, the possible inputs are:
 #A, B, X, Y, GUIDE, LEFTX, LEFTY, RIGHTX, RIGHTY, DPADUP, DPADDOWN, DPADLEFT, DPADRIGHT, LEFTTHUMBSTICK, RIGHTTHUMBSTICK, LEFTBUMPER, RIGHTBUMPER, LEFTTRIGGER, RIGHTTRIGGER

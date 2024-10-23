@@ -3,15 +3,16 @@ from time import sleep
 
 def on_press(key):
     keyStr = str(key).upper()
-    print("\nPressed: " + keyStr)
     if keyStr == "','":
-        print("Comma is used to separate values in input.txt, so you're not allowed to use a comma as input.")
+        print("\nPressed: KEY_'COMMA'")
     elif keyStr == "KEY.ESC":
         print("Escape is used to terminate the program, so you're not allowed to use escape as input.")
+    else
+        print("\nPressed: KEY_" + keyStr)
 
 def on_click(x, y, button, pressed):
     if pressed:
-        print("\nPressed: " + str(button))
+        print("\nPressed: KEY_" + str(button))
 
 def main():
     print("Press any key to see value. Press CTRL + C to exit.")
