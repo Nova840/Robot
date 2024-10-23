@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd /home/pi/Desktop/Robot
 
 chmod 755 install.sh
