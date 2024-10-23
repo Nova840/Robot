@@ -4,7 +4,7 @@
 
 3. Run the install.sh script by double clicking on it and clicking "Execute in Terminal". The Raspberry Pi will reboot. If you don't have this option, right click it and go to Properties, then Permissions. From there you should change Execute to "Anyone".
 
-4. After the system reboots, you should see the program running. Press F3 to exit the program and open inputs.txt. There are instructions for setting up input in that file.
+4. After the system reboots, you should see the program running. Press ESCAPE to exit the program and open inputs.txt. There are instructions for setting up input in that file.
 
 -To run the program again, run the launcher.sh script.
 
