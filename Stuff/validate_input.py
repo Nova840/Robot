@@ -113,57 +113,57 @@ def _servoValuesWithinRange(splitLine):
     return True
 
 def _uniquePins(splitLines):
-    channels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-    pins = [4,17,27,22,10,9,11,5,6,13,19,26,14,15,18,23,24,25,8,7,12,16,20,21]
+    availableChannels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    availablePins = [4,17,27,22,10,9,11,5,6,13,19,26,14,15,18,23,24,25,8,7,12,16,20,21]
     for splitLine in splitLines:
         first = splitLine[0]
         
         if first == "L298N":
-            if not _validPin(int(splitLine[1]), pins, True) or not _validPin(int(splitLine[2]), pins, False) or not _validPin(int(splitLine[3]), pins, False):
+            if not _validPin(int(splitLine[1]), availablePins, True) or not _validPin(int(splitLine[2]), availablePins, False) or not _validPin(int(splitLine[3]), availablePins, False):
                 return False
         elif first == "DRV8833":
-            if not _validPin(int(splitLine[1]), pins, False) or not _validPin(int(splitLine[2]), pins, False):
+            if not _validPin(int(splitLine[1]), availablePins, False) or not _validPin(int(splitLine[2]), availablePins, False):
                 return False
         elif first == "SERVO_1" or first == "SERVO_2":
-            if not _validPin(int(splitLine[1]), pins, False):
+            if not _validPin(int(splitLine[1]), availablePins, False):
                 return False
         elif first == "PCA9685_1" or first == "PCA9685_2":
-            if not _validPin(int(splitLine[1]), channels, False):
+            if not _validPin(int(splitLine[1]), availableChannels, False):
                 return False
             
         if first == "L298N":
             for i in range(len(splitLine[4:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 4][0:3] == "SWT" and not _validPin(int(splitLine[i + 4][4:]), pins, False):
+                if splitLine[i + 4][0:3] == "SWT" and not _validPin(int(splitLine[i + 4][4:]), availablePins, False):
                     return False
         elif first == "DRV8833":
             for i in range(len(splitLine[3:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 3][0:3] == "SWT" and not _validPin(int(splitLine[i + 3][4:]), pins, False):
+                if splitLine[i + 3][0:3] == "SWT" and not _validPin(int(splitLine[i + 3][4:]), availablePins, False):
                     return False
         elif first == "SHUTDOWN":
             for i in range(len(splitLine[1:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 1][0:3] == "SWT" and not _validPin(int(splitLine[i + 1][4:]), pins, False):
+                if splitLine[i + 1][0:3] == "SWT" and not _validPin(int(splitLine[i + 1][4:]), availablePins, False):
                     return False
         else:
             for i in range(len(splitLine[5:])):
                 if i % 2 == 1:
                     continue
-                if splitLine[i + 5][0:3] == "SWT" and not _validPin(int(splitLine[i + 5][4:]), pins, False):
+                if splitLine[i + 5][0:3] == "SWT" and not _validPin(int(splitLine[i + 5][4:]), availablePins, False):
                     return False
                 
     return True
 
-def _validPin(pin, pins, isL298nEN):
+def _validPin(pin, availablePins, isL298nEN):
     if isL298nEN and pin < 0:
         return True
-    valid = pin in pins
+    valid = pin in availablePins
     if valid:
-        pins.remove(pin)
+        availablePins.remove(pin)
     return valid
 
 def _isServo(str):
